@@ -156,7 +156,8 @@ spec:
 
   post {
     always {
-      junit testResults: '**/target/surefire-reports/*.xml, **/build/test-results/test/*.xml'
+      junit testResults: 'org.eclipse.xtend.maven*/target/surefire-reports/*.xml, **/build/test-results/test/*.xml'
+      junit testResults: 'org.eclipse.xtend.ide*/target/surefire-reports/*.xml'
       archiveArtifacts artifacts: 'org.eclipse.xtend.ide.swtbot.tests/screenshots/**, build/**, **/target/work/data/.metadata/.log, **/hs_err_pid*.log'
     }
     success {
