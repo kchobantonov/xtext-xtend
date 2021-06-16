@@ -5,10 +5,21 @@ apply from: "${rootDir}/gradle/mwe2-workflows.gradle"
 dependencies {
 	compile "org.eclipse.xtext:org.eclipse.xtext.xbase:$versions.xtext"
 	compile "org.eclipse.platform:org.eclipse.equinox.common"
-	compile "org.eclipse.platform:org.eclipse.core.runtime"
-	compile "org.eclipse.jdt:org.eclipse.jdt.core"
-	compile "org.eclipse.jdt:org.eclipse.jdt.compiler.apt"
-	compile "org.eclipse.jdt:org.eclipse.jdt.compiler.tool"
+	compile ('org.eclipse.platform:org.eclipse.core.runtime') {
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.equinox.common'
+	}
+	compile("org.eclipse.jdt:org.eclipse.jdt.core") {
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.equinox.common'
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.core.runtime'
+	}
+	compile("org.eclipse.jdt:org.eclipse.jdt.compiler.apt") {
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.equinox.common'
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.core.runtime'
+	}
+	compile("org.eclipse.jdt:org.eclipse.jdt.compiler.tool") {
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.equinox.common'
+		exclude group: 'org.eclipse.platform', module: 'org.eclipse.core.runtime'
+	}
 	optional "org.eclipse.xtext:org.eclipse.xtext.xbase.testing:$versions.xtext"
 	optional "org.apache.ant:ant:$versions.ant"
 	mwe2Compile "org.eclipse.xtext:org.eclipse.xtext.xtext.generator:$versions.xtext"
