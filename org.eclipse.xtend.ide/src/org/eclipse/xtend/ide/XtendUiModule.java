@@ -4,6 +4,7 @@
 package org.eclipse.xtend.ide;
 
 import com.google.inject.Binder;
+import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.jface.text.source.IAnnotationHover;
@@ -118,12 +119,15 @@ import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalComparator;
 import org.eclipse.xtext.ui.editor.contentassist.IContentAssistantFactory;
 import org.eclipse.xtext.ui.editor.contentassist.IContextInformationProvider;
 import org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper;
 import org.eclipse.xtext.ui.editor.contentassist.ITemplateProposalProvider;
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher;
+import org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistContextFactoryWithSharedPool;
+import org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistContextFactoryWithSharedPool.SharedExecutorServiceAccess;
 import org.eclipse.xtext.ui.editor.copyqualifiedname.CopyQualifiedNameService;
 import org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider;
 import org.eclipse.xtext.ui.editor.embedded.IEditedResourceProvider;
@@ -161,6 +165,7 @@ import org.eclipse.xtext.ui.refactoring.IRenameStrategy;
 import org.eclipse.xtext.ui.refactoring.impl.RenameElementProcessor;
 import org.eclipse.xtext.ui.refactoring.ui.IRenameContextFactory;
 import org.eclipse.xtext.ui.resource.IResourceUIServiceProvider;
+import org.eclipse.xtext.ui.shared.Access;
 import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.eclipse.xtext.validation.IResourceValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
@@ -592,6 +597,15 @@ public class XtendUiModule extends AbstractXtendUiModule {
 
 	public Class<? extends JavaElementDelegateJunitLaunch> bindJavaElementDelegateJunitLaunch() {
 		return XtendJavaElementDelegateJunitLaunch.class;
+	}
+	
+	@Override
+	public Class<? extends ContentAssistContext.Factory> bindContentAssistContext$Factory() {
+		return DelegatingContentAssistContextFactoryWithSharedPool.class;
+	}
+
+	public Provider<? extends SharedExecutorServiceAccess> provideSharedExecutorServiceAccess() {
+		return Access.provider(SharedExecutorServiceAccess.class);
 	}
 
 }
